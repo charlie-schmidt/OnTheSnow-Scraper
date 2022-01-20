@@ -1,7 +1,7 @@
 from requests_html import HTML, HTMLSession
 import csv
-import os.path
 from datetime import date
+import pyodbc
 
 resortsList = [
 
@@ -23,17 +23,26 @@ resortsList = [
 , ('quebec','tremblant','Tremblant')
 ]
 
-# Get today's date as runDate
+# Get today's date + day of week
 runDate = date.today()
+dayOfWeek = runDate.weekday()
+if dayOfWeek == 0: dayString = "Monday"
+elif dayOfWeek == 1: dayString = "Tuesday"
+elif dayOfWeek == 2: dayString = "Wednesday"
+elif dayOfWeek == 3: dayString = "Thursday"
+elif dayOfWeek == 4: dayString = "Friday"
+elif dayOfWeek == 5: dayString = "Saturday"
+elif dayOfWeek == 6: dayString = "Sunday"
+else: dayString = "Null"
 
-## Open/Set Up CSV File
-save_path = 'C:/Users/cschmidt/OneDrive - Alterra Mountain Company/OnTheSnow Scraper/CSV Data Output/'
-new_file_name = 'dynamic_mtn_data-%s.csv' % (runDate)
-completeName = os.path.join(save_path, new_file_name)
-new_file = open(completeName, 'w', newline='')
-csv_writer = csv.writer(new_file)
-headers = ['Run-Date', 'Resort', 'New Snow Yesterday', 'New Snow Today', 'New Snow Tomorrow', 'Base Temp Today', 'Base Temp Tomorrow', 'Summit Temp Today', 'Summit Temp Tomorrow', 'Weather Today', 'Weather Tomorrow']
-csv_writer.writerow(headers)
+## Open/Set Up SQL Connection
+conn = pyodbc.connect('Driver={SQL Server};'
+                      'Server=charlietest-server.database.windows.net;'
+                      'Database=charlietest-db;'
+                      'UID=cschmidt;'
+                      'PWD=7377GodLovesUgly$;')
+
+cursor = conn.cursor()
 
 
 for resort in resortsList:
@@ -76,11 +85,12 @@ for resort in resortsList:
     snowForecast_list = w.html.find('td.styles_snow__2D5k7')
     tomorrow_snow = snowForecast_list[1].text
 
-    # Write results to CSV
-    resortData = [runDate, cleanName, yesterday_snow, today_snow, tomorrow_snow, today_baseTemp, tomorrow_baseTemp, today_summitTemp, tomorrow_summitTemp, today_weather, tomorrow_weather]
-    csv_writer.writerow(resortData)
+    # Write results to SQL Table
+    cursor.execute(
+        "INSERT INTO dbo.MtnData VALUES(?,?,?,?,?,?,?,?,?,?,?,?)", (runDate, dayString, cleanName, yesterday_snow, today_snow, tomorrow_snow, today_baseTemp, tomorrow_baseTemp, today_summitTemp, tomorrow_summitTemp, today_weather, tomorrow_weather)
+    )
 
-new_file.close()
+
 
 print("Data scrape complete")
 
