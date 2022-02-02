@@ -94,6 +94,29 @@ for resort in resortsList:
     resortData = [runDate, dayString, cleanName, yesterday_snow, today_snow, tomorrow_snow, today_baseTempLow, today_baseTempHigh, tomorrow_baseTempLow, tomorrow_baseTempHigh, today_summitTempLow, today_summitTempHigh, tomorrow_summitTempLow, tomorrow_summitTempHigh, today_weather, tomorrow_weather]
     csv_writer.writerow(resortData)
 
+
+
+
+    
+
+    # print("Rundate", type(runDate))
+    # print("dayString", type(dayString))
+    # print("cleanName", type(cleanName))
+    # print("yesterday_snow", type(yesterday_snow))
+    # print("today_snow", type(today_snow))
+    # print("tomorrow_snow", type(tomorrow_snow))
+    # print("today_baseTempLow", type(today_baseTempLow))
+    # print("today_baseTempHigh", type(today_baseTempHigh))
+    # print("tomorrow_baseTempLow", type(tomorrow_baseTempLow))
+    # print("tomorrow_baseTempHigh", type(tomorrow_baseTempHigh))
+    # print("today_summitTempLow", type(today_summitTempLow))
+    # print("today_summitTempHigh", type(today_summitTempHigh))
+    # print("tomorrow_summitTempLow", type(tomorrow_summitTempLow))
+    # print("tomorrow_summitTempHigh", type(tomorrow_summitTempHigh))
+    # print("today_weather", type(today_weather))
+    # print("tomorrow_weather", type(tomorrow_weather))
+
+
 new_file.close()
 
 print("Data scrape complete")
