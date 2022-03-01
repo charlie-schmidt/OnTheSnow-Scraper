@@ -5,21 +5,21 @@ from datetime import date
 resortsList = [
 
     # AMC Resorts
-('colorado', 'steamboat', 'Steamboat')
-, ('colorado','winter-park-resort','Winter Park')
-, ('utah','deer-valley-resort', 'Deer Valley')
-, ('utah', 'solitude-mountain-resort','Solitude')
-, ('montana','whitefish-mountain-resort','Whitefish')
-, ('california','squaw-valley-usa','Palisades Tahoe')
-, ('california','mammoth-mountain-ski-area','Mammoth')
-, ('california','bear-mountain','Bear Mountain')
-, ('california','snow-summit','Snow Summit')
-, ('pennsylvania','blue-mountain-ski-area','Blue Mountain')
-, ('washington','crystal-mountain-wa', 'Crystal')
-, ('west-virginia','snowshoe-mountain-resort', 'Snowshoe')
-, ('california','june-mountain', 'June')
-, ('vermont','sugarbush','Sugarbush')
-, ('quebec','tremblant','Tremblant')
+('colorado', 'steamboat', 'Steamboat', 'Alterra')
+, ('colorado','winter-park-resort','Winter Park', 'Alterra')
+, ('utah','deer-valley-resort', 'Deer Valley', 'Alterra')
+, ('utah', 'solitude-mountain-resort','Solitude', 'Alterra')
+, ('montana','whitefish-mountain-resort','Whitefish', 'Alterra')
+, ('california','squaw-valley-usa','Palisades Tahoe', 'Alterra')
+, ('california','mammoth-mountain-ski-area','Mammoth', 'Alterra')
+, ('california','bear-mountain','Bear Mountain', 'Alterra')
+, ('california','snow-summit','Snow Summit', 'Alterra')
+, ('pennsylvania','blue-mountain-ski-area','Blue Mountain', 'Alterra')
+, ('washington','crystal-mountain-wa', 'Crystal', 'Alterra')
+, ('west-virginia','snowshoe-mountain-resort', 'Snowshoe', 'Alterra')
+, ('california','june-mountain', 'June', 'Alterra')
+, ('vermont','sugarbush','Sugarbush', 'Alterra')
+, ('quebec','tremblant','Tremblant', 'Alterra')
 ]
 
 # Get today's date + day of week
@@ -38,7 +38,7 @@ else: dayString = "Null"
 new_file_name = 'C:/Users/cschmidt/OneDrive - Alterra Mountain Company/OnTheSnow Scraper/CSV Data Output/dynamic_mtn_data-test-%s.csv' % (runDate)
 new_file = open(new_file_name, 'w', newline='')
 csv_writer = csv.writer(new_file)
-headers = ['Run-Date', 'Day of Week','Resort', 'New Snow Yesterday', 'New Snow Today', 'New Snow Tomorrow', 'Low Base Temp Today','High Base Temp Today', 'Low Base Temp Tomorrow','High Base Temp Tomorrow' ,'Low Summit Temp Today', 'High Summit Temp Today','Low Summit Temp Tomorrow', 'High Summit Temp Tomorrow','Weather Today', 'Weather Tomorrow']
+headers = ['Run-Date', 'Day of Week', 'Resort', 'Resort Type', 'New Snow Yesterday', 'New Snow Today', 'New Snow Tomorrow', 'Low Base Temp Today', 'High Base Temp Today', 'Low Base Temp Tomorrow','High Base Temp Tomorrow' ,'Low Summit Temp Today', 'High Summit Temp Today','Low Summit Temp Tomorrow', 'High Summit Temp Tomorrow','Weather Today', 'Weather Tomorrow']
 csv_writer.writerow(headers)
 
 
@@ -47,6 +47,7 @@ for resort in resortsList:
     region = resort[0]
     resortName = resort[1]
     cleanName = resort[2]
+    resortType = resort[3]
 
     # Start session + render JS
     s = HTMLSession()
@@ -91,30 +92,8 @@ for resort in resortsList:
     tomorrow_snow = snowForecast_list[1].text.replace('"', '')
 
     # Write results to CSV
-    resortData = [runDate, dayString, cleanName, yesterday_snow, today_snow, tomorrow_snow, today_baseTempLow, today_baseTempHigh, tomorrow_baseTempLow, tomorrow_baseTempHigh, today_summitTempLow, today_summitTempHigh, tomorrow_summitTempLow, tomorrow_summitTempHigh, today_weather, tomorrow_weather]
+    resortData = [runDate, dayString, cleanName, resortType, yesterday_snow, today_snow, tomorrow_snow, today_baseTempLow, today_baseTempHigh, tomorrow_baseTempLow, tomorrow_baseTempHigh, today_summitTempLow, today_summitTempHigh, tomorrow_summitTempLow, tomorrow_summitTempHigh, today_weather, tomorrow_weather]
     csv_writer.writerow(resortData)
-
-
-
-
-    
-
-    # print("Rundate", type(runDate))
-    # print("dayString", type(dayString))
-    # print("cleanName", type(cleanName))
-    # print("yesterday_snow", type(yesterday_snow))
-    # print("today_snow", type(today_snow))
-    # print("tomorrow_snow", type(tomorrow_snow))
-    # print("today_baseTempLow", type(today_baseTempLow))
-    # print("today_baseTempHigh", type(today_baseTempHigh))
-    # print("tomorrow_baseTempLow", type(tomorrow_baseTempLow))
-    # print("tomorrow_baseTempHigh", type(tomorrow_baseTempHigh))
-    # print("today_summitTempLow", type(today_summitTempLow))
-    # print("today_summitTempHigh", type(today_summitTempHigh))
-    # print("tomorrow_summitTempLow", type(tomorrow_summitTempLow))
-    # print("tomorrow_summitTempHigh", type(tomorrow_summitTempHigh))
-    # print("today_weather", type(today_weather))
-    # print("tomorrow_weather", type(tomorrow_weather))
 
 
 new_file.close()
